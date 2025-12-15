@@ -3,57 +3,35 @@
 {% block titulo %}Películas por Actor{% endblock %}
 
 {% block contenido %}
-<div class="uk-card uk-card-default uk-card-body">
-    <h3 class="uk-card-title">Buscar Películas por Actor</h3>
-    
-    <form method="post" class="uk-form-stacked">
+    <form method="post">
         {% csrf_token %}
-        
-        <div class="uk-margin">
-            <label class="uk-form-label" for="id_actor">{{ formulario.actor.label }}</label>
-            <div class="uk-form-controls">
-                {{ formulario.actor }}
-                {% if formulario.actor.errors %}
-                    <div class="uk-text-danger">{{ formulario.actor.errors }}</div>
-                {% endif %}
-            </div>
-        </div>
-        
-        <div class="uk-margin">
-            <button type="submit" class="uk-button uk-button-primary">Buscar</button>
-        </div>
+        {{ formulario.actor }}
+        <button type="submit">Buscar</button>
     </form>
     
     {% if peliculas %}
-        <hr class="uk-divider-icon">
+        <br>
+        <p>Actor: {{ actor }}</p>
+        <p>Total de películas: {{ num_peliculas }}</p>
+        <br>
         
-        <h4>Resultados para: {{ actor }}</h4>
-        <p><strong>Total de películas:</strong> {{ num_peliculas }}</p>
-        
-        <div class="uk-overflow-auto">
-            <table class="uk-table uk-table-striped uk-table-hover uk-table-small">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Título</th>
-                        <th>Fecha</th>
-                        <th>Director</th>
-                        <th>Actores Principales</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for pelicula in peliculas %}
-                    <tr>
-                        <td>{{ pelicula.idPelicula }}</td>
-                        <td>{{ pelicula.titulo }}</td>
-                        <td>{{ pelicula.fecha|date:"d/m/Y" }}</td>
-                        <td>{{ pelicula.director }}</td>
-                        <td>{{ pelicula.actoresPrincipales }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+        <table border="1">
+            <tr>
+                <th>ID</th>
+                <th>Título</th>
+                <th>Fecha</th>
+                <th>Director</th>
+                <th>Actores Principales</th>
+            </tr>
+            {% for pelicula in peliculas %}
+            <tr>
+                <td>{{ pelicula.idPelicula }}</td>
+                <td>{{ pelicula.titulo }}</td>
+                <td>{{ pelicula.fecha|date:"d/m/Y" }}</td>
+                <td>{{ pelicula.director }}</td>
+                <td>{{ pelicula.actoresPrincipales }}</td>
+            </tr>
+            {% endfor %}
+        </table>
     {% endif %}
-</div>
 {% endblock %}

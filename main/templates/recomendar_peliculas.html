@@ -3,78 +3,39 @@
 {% block titulo %}Recomendar Películas{% endblock %}
 
 {% block contenido %}
-<div class="uk-card uk-card-default uk-card-body">
-    <h3 class="uk-card-title">Recomendar Películas a un Usuario</h3>
-    
-    <p>Introduce un ID de usuario y una fecha límite. El sistema recomendará 2 películas anteriores a esa fecha que el usuario no haya puntuado.</p>
-    
-    <form method="post" class="uk-form-stacked">
+    <form method="post">
         {% csrf_token %}
-        
-        <div class="uk-margin">
-            <label class="uk-form-label" for="id_idUsuario">{{ formulario.idUsuario.label }}</label>
-            <div class="uk-form-controls">
-                {{ formulario.idUsuario }}
-                {% if formulario.idUsuario.errors %}
-                    <div class="uk-text-danger">{{ formulario.idUsuario.errors }}</div>
-                {% endif %}
-            </div>
-        </div>
-        
-        <div class="uk-margin">
-            <label class="uk-form-label" for="id_fecha">{{ formulario.fecha.label }}</label>
-            <div class="uk-form-controls">
-                {{ formulario.fecha }}
-                {% if formulario.fecha.errors %}
-                    <div class="uk-text-danger">{{ formulario.fecha.errors }}</div>
-                {% endif %}
-                <small class="uk-text-muted">Formato: dd/mm/aaaa (ejemplo: 15/12/1995)</small>
-            </div>
-        </div>
-        
-        <div class="uk-margin">
-            <button type="submit" class="uk-button uk-button-primary">Obtener Recomendaciones</button>
-        </div>
+        <p>ID Usuario: {{ formulario.idUsuario }}</p>
+        <p>Fecha (dd/mm/aaaa): {{ formulario.fecha }}</p>
+        <button type="submit">Obtener Recomendaciones</button>
     </form>
     
     {% if recomendaciones %}
-        <hr class="uk-divider-icon">
+        <br>
+        <p>Recomendaciones para Usuario: {{ usuario }}</p>
+        <p>Películas anteriores a: {{ fecha|date:"d/m/Y" }}</p>
+        <br>
         
-        <h4>Recomendaciones para Usuario: {{ usuario }}</h4>
-        <p><strong>Películas anteriores a:</strong> {{ fecha|date:"d/m/Y" }}</p>
-        
-        {% if recomendaciones %}
-            <div class="uk-grid-small uk-child-width-1-1" uk-grid>
-                {% for rec in recomendaciones %}
-                <div>
-                    <div class="uk-card uk-card-secondary uk-card-hover uk-card-body">
-                        <h5 class="uk-card-title">
-                            {{ rec.titulo }}
-                            <span class="uk-badge">Recomendación: {{ rec.recomendacion }}</span>
-                        </h5>
-                        <p>
-                            <strong>Fecha:</strong> {{ rec.fecha|date:"d/m/Y" }}<br>
-                            <strong>Director:</strong> {{ rec.director }}<br>
-                            <strong>Actores:</strong> {{ rec.actores }}
-                        </p>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-        {% else %}
-            <div class="uk-alert-warning" uk-alert>
-                <p>No se encontraron recomendaciones para este usuario con los criterios especificados.</p>
-            </div>
-        {% endif %}
-        
-        <div class="uk-margin-top">
-            <a href="/recomendar_peliculas/" class="uk-button uk-button-default">Nueva Búsqueda</a>
-        </div>
+        <table border="1">
+            <tr>
+                <th>Título</th>
+                <th>Fecha</th>
+                <th>Director</th>
+                <th>Actores</th>
+                <th>Recomendación</th>
+            </tr>
+            {% for rec in recomendaciones %}
+            <tr>
+                <td>{{ rec.titulo }}</td>
+                <td>{{ rec.fecha|date:"d/m/Y" }}</td>
+                <td>{{ rec.director }}</td>
+                <td>{{ rec.actores }}</td>
+                <td>{{ rec.recomendacion }}</td>
+            </tr>
+            {% endfor %}
+        </table>
     {% elif usuario %}
-        <hr class="uk-divider-icon">
-        <div class="uk-alert-warning" uk-alert>
-            <p>No se encontraron recomendaciones para el usuario {{ usuario }} anterior a la fecha {{ fecha|date:"d/m/Y" }}.</p>
-        </div>
+        <br>
+        <p>No se encontraron recomendaciones para el usuario {{ usuario }} anterior a la fecha {{ fecha|date:"d/m/Y" }}.</p>
     {% endif %}
-</div>
 {% endblock %}

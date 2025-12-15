@@ -3,52 +3,26 @@
 {% block titulo %}Usuarios Más Activos{% endblock %}
 
 {% block contenido %}
-<div class="uk-card uk-card-default uk-card-body">
-    <h3 class="uk-card-title">Los 5 Usuarios Que Más Películas Han Puntuado</h3>
-    
     {% if usuarios %}
         {% for usuario_info in usuarios %}
-            <div class="uk-card uk-card-primary uk-margin">
-                <div class="uk-card-header">
-                    <h4 class="uk-card-title">
-                        Usuario ID: {{ usuario_info.id_usuario }} 
-                        <span class="uk-badge">{{ usuario_info.num_peliculas }} películas puntuadas</span>
-                    </h4>
-                </div>
-                <div class="uk-card-body">
-                    <h5>Usuarios más similares (Correlación de Pearson):</h5>
-                    {% if usuario_info.similares %}
-                        <table class="uk-table uk-table-small uk-table-divider">
-                            <thead>
-                                <tr>
-                                    <th>ID Usuario</th>
-                                    <th>Coeficiente de Similaridad</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for similaridad, id_usuario_similar in usuario_info.similares %}
-                                <tr>
-                                    <td>{{ id_usuario_similar }}</td>
-                                    <td>{{ similaridad|floatformat:4 }}</td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    {% else %}
-                        <p class="uk-text-muted">No se encontraron usuarios similares</p>
-                    {% endif %}
-                </div>
-            </div>
+            <p><strong>Usuario ID: {{ usuario_info.id_usuario }} - {{ usuario_info.num_peliculas }} películas puntuadas</strong></p>
+            
+            <p>Usuarios más similares:</p>
+            <table border="1">
+                <tr>
+                    <th>ID Usuario</th>
+                    <th>Coeficiente de Similaridad</th>
+                </tr>
+                {% for similaridad, id_usuario_similar in usuario_info.similares %}
+                <tr>
+                    <td>{{ id_usuario_similar }}</td>
+                    <td>{{ similaridad|floatformat:4 }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            <br>
         {% endfor %}
-        
-        <div class="uk-margin-top">
-            <a href="/" class="uk-button uk-button-default">Volver al Inicio</a>
-        </div>
     {% else %}
-        <div class="uk-alert-warning" uk-alert>
-            <p>No hay datos disponibles. Asegúrese de haber cargado la base de datos y el sistema de recomendación.</p>
-        </div>
-        <a href="/cargar_bd/" class="uk-button uk-button-primary">Cargar Base de Datos</a>
+        <p>No hay datos disponibles.</p>
     {% endif %}
-</div>
 {% endblock %}

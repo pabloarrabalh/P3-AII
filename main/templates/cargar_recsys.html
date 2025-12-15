@@ -3,34 +3,16 @@
 {% block titulo %}Cargar Sistema de Recomendación{% endblock %}
 
 {% block contenido %}
-<div class="uk-card uk-card-default uk-card-body">
     {% if not mensaje %}
-        <h3 class="uk-card-title">Cargar Sistema de Recomendación</h3>
-        
-        <p>Esta operación cargará en memoria todos los datos necesarios para el sistema de recomendación.</p>
-        
-        <div class="uk-alert-primary" uk-alert>
-            <p><strong>Importante:</strong> Asegúrese de haber cargado previamente la base de datos.</p>
-        </div>
+        <p>Este proceso puede tardar varios minutos.</p>
         
         <form method="post">
             {% csrf_token %}
-            <div class="uk-margin">
-                <button type="submit" class="uk-button uk-button-primary">Cargar Sistema de Recomendación</button>
-                <a href="/" class="uk-button uk-button-default">Cancelar</a>
-            </div>
+            <button type="submit">Cargar Sistema de Recomendación</button>
         </form>
     {% else %}
-        <h3 class="uk-card-title">Sistema Cargado</h3>
-        
-        <div class="uk-alert-success" uk-alert>
-            <p>{{ mensaje }}</p>
-        </div>
-        
-        <div class="uk-margin-top">
-            <a href="/" class="uk-button uk-button-primary">Volver al Inicio</a>
-            <a href="/recomendar_peliculas/" class="uk-button uk-button-secondary">Recomendar Películas</a>
-        </div>
+        <p>{{ mensaje }}</p>
+        <br>
+        <a href="/">Volver al Inicio</a>
     {% endif %}
-</div>
 {% endblock %}

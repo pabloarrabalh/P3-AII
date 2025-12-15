@@ -9,17 +9,10 @@ from django.conf import settings
 path = os.path.join(settings.BASE_DIR, "data")
 
 def populate():
-    """
-    Función principal para poblar la base de datos
-    """
     m = populateMovies()
     populateRatings(m)
 
 def populateMovies():
-    """
-    Carga las películas desde el archivo movies1.txt
-    Formato: idPelicula \t Titulo \t Fecha \t Director \t ActoresPrincipales
-    """
     Pelicula.objects.all().delete()
     
     lista_peliculas = []
@@ -27,25 +20,27 @@ def populateMovies():
     
     fileobj = open(os.path.join(path, "movies1.txt"), "r", encoding='utf-8')
     for line in fileobj.readlines():
-        rip = line.strip().split('\t')
-        if len(rip) != 5:
-            continue
-        
-        # Parsear la fecha (formato YYYY-MM-DD)
         try:
-            fecha = datetime.strptime(rip[2], '%Y-%m-%d').date()
+            rip = line.strip().split('\t')
+            
+            # Parsear la fecha (formato YYYY-MM-DD)
+            try:
+                fecha = datetime.strptime(rip[2], '%Y-%m-%d').date()
+            except:
+                fecha = None
+            
+            pelicula = Pelicula(
+                idPelicula=int(rip[0]),
+                titulo=rip[1] if len(rip) > 1 else '',
+                fecha=fecha,
+                director=rip[3] if len(rip) > 3 else '',
+                actoresPrincipales=rip[4] if len(rip) > 4 else ''
+            )
+            lista_peliculas.append(pelicula)
+            dict_peliculas[int(rip[0])] = pelicula
         except:
-            fecha = None
-        
-        pelicula = Pelicula(
-            idPelicula=int(rip[0]),
-            titulo=rip[1],
-            fecha=fecha,
-            director=rip[3],
-            actoresPrincipales=rip[4]
-        )
-        lista_peliculas.append(pelicula)
-        dict_peliculas[int(rip[0])] = pelicula
+            # Si hay error en alguna línea, simplemente la saltamos
+            continue
     
     fileobj.close()
     Pelicula.objects.bulk_create(lista_peliculas)
@@ -64,7 +59,7 @@ def populateRatings(m):
     fileobj = open(os.path.join(path, "ratings.txt"), "r", encoding='utf-8')
     for line in fileobj.readlines():
         rip = line.strip().split('\t')
-        if len(rip) != 3:
+        if len(rip) < 3:
             continue
         
         id_pelicula = int(rip[1])

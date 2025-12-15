@@ -3,65 +3,22 @@
 {% block titulo %}Cargar Base de Datos{% endblock %}
 
 {% block contenido %}
-<div class="uk-card uk-card-default uk-card-body">
     {% if not stats %}
-        <h3 class="uk-card-title">Cargar Datos desde el Dataset</h3>
+        <p>Este proceso puede tardar varios minutos.</p>
         
-        <div class="uk-alert-warning" uk-alert>
-            <p><strong>Advertencia:</strong> Esta operación borrará todos los datos actuales de la base de datos y los reemplazará con los datos del dataset.</p>
-        </div>
-        
-        <form method="post" class="uk-form-stacked">
+        <form method="post">
             {% csrf_token %}
-            
-            <div class="uk-margin">
-                <div class="uk-form-controls">
-                    <label>
-                        <input class="uk-checkbox" type="checkbox" name="confirmacion" required>
-                        {{ formulario.confirmacion.label }}
-                    </label>
-                    {% if formulario.confirmacion.errors %}
-                        <div class="uk-text-danger">{{ formulario.confirmacion.errors }}</div>
-                    {% endif %}
-                </div>
-            </div>
-            
-            <div class="uk-margin">
-                <button type="submit" class="uk-button uk-button-primary">Cargar Base de Datos</button>
-                <a href="/" class="uk-button uk-button-default">Cancelar</a>
-            </div>
+            <input type="checkbox" name="confirmacion" required> Sí, quiero cargar la base de datos
+            <br><br>
+            <button type="submit">Cargar Base de Datos</button>
         </form>
     {% else %}
-        <h3 class="uk-card-title">Base de Datos Cargada Correctamente</h3>
+        <p>Base de datos cargada correctamente.</p>
         
-        <div class="uk-alert-success" uk-alert>
-            <p><strong>Éxito:</strong> Los datos se han cargado correctamente en la base de datos.</p>
-        </div>
+        <p>Películas: {{ stats.peliculas }}</p>
+        <p>Puntuaciones: {{ stats.puntuaciones }}</p>
         
-        <h4>Estadísticas de la Base de Datos:</h4>
-        <table class="uk-table uk-table-striped uk-table-hover">
-            <thead>
-                <tr>
-                    <th>Tabla</th>
-                    <th>Registros</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Películas</td>
-                    <td>{{ stats.peliculas }}</td>
-                </tr>
-                <tr>
-                    <td>Puntuaciones</td>
-                    <td>{{ stats.puntuaciones }}</td>
-                </tr>
-            </tbody>
-        </table>
-        
-        <div class="uk-margin-top">
-            <a href="/" class="uk-button uk-button-primary">Volver al Inicio</a>
-            <a href="/cargar_recsys/" class="uk-button uk-button-secondary">Cargar Sistema de Recomendación</a>
-        </div>
+        <br>
+        <a href="/">Volver al Inicio</a>
     {% endif %}
-</div>
 {% endblock %}
