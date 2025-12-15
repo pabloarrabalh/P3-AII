@@ -1,5 +1,5 @@
 #encoding:utf-8
-
+from django.db.models import Count
 from math import sqrt
 from main.models import Puntuacion, Pelicula
 from datetime import datetime
@@ -100,10 +100,6 @@ def transformPrefs(prefs):
     return result
 
 def loadPrefs():
-    """
-    Carga las preferencias desde la base de datos
-    Formato: {idUsuario: {idPelicula: puntuacion}}
-    """
     global prefs
     prefs = {}
     
@@ -119,13 +115,7 @@ def loadPrefs():
     
     return prefs
 
-def getUsuariosMasActivos(n=5):
-    """
-    Devuelve los n usuarios que más películas han puntuado
-    Retorna: lista de tuplas (idUsuario, num_peliculas)
-    """
-    from django.db.models import Count
-    
+def getUsuariosMasActivos(n=5):    
     usuarios = Puntuacion.objects.values('idUsuario').annotate(
         num_peliculas=Count('pelicula')
     ).order_by('-num_peliculas')[:n]
