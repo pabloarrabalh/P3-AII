@@ -1,5 +1,3 @@
-#encoding:utf-8
-
 from main.models import Pelicula, Puntuacion
 from datetime import datetime
 import os
@@ -23,7 +21,7 @@ def populateMovies():
         try:
             rip = line.strip().split('\t')
             
-            # Parsear la fecha (formato YYYY-MM-DD)
+            # YYYY-MM-DD
             try:
                 fecha = datetime.strptime(rip[2], '%Y-%m-%d').date()
             except:
@@ -48,11 +46,6 @@ def populateMovies():
     return dict_peliculas
 
 def populateRatings(m):
-    """
-    Carga las puntuaciones desde el archivo ratings.txt
-    Formato: idUsuario \t idPelicula \t Puntuacion
-    Usa el diccionario de películas para acelerar la carga
-    """
     Puntuacion.objects.all().delete()
     
     lista = []
@@ -74,9 +67,6 @@ def populateRatings(m):
     Puntuacion.objects.bulk_create(lista)
 
 def get_database_stats():
-    """
-    Devuelve estadísticas de la base de datos
-    """
     num_peliculas = Pelicula.objects.count()
     num_puntuaciones = Puntuacion.objects.count()
     
