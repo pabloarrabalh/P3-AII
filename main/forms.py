@@ -25,7 +25,6 @@ class FormularioPeliculasPorActor(forms.Form):
     
     def __init__(self, *args, **kwargs):
         super(FormularioPeliculasPorActor, self).__init__(*args, **kwargs)
-        # Obtener la lista de actores
         try:
             actores = recommendations.obtener_actores_unicos()
             self.fields['actor'].choices = [(actor, actor) for actor in actores]
