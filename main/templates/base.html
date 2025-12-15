@@ -1,0 +1,57 @@
+{% load static %} 
+
+<!DOCTYPE html>
+<html lang='es'>
+<head>
+    <meta charset='utf-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sistema de Recomendación de Películas</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.16.14/dist/css/uikit.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.16.14/dist/js/uikit.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.16.14/dist/js/uikit-icons.min.js"></script>
+</head>
+<body>
+    
+    <div class="uk-container uk-container-expand">
+        <h1 class="uk-heading-small uk-text-center uk-margin-top">SISTEMA DE RECOMENDACIÓN DE PELÍCULAS</h1>
+        
+        <nav class="uk-navbar-container uk-margin" uk-navbar>
+            <div class="uk-navbar-left">
+                <ul class="uk-navbar-nav">
+                    <li class="uk-active">
+                        <a href="#">Inicio</a>
+                        <div class="uk-navbar-dropdown">
+                            <ul class="uk-nav uk-navbar-dropdown-nav">
+                                <li><a href="/cargar_bd/">Cargar Base de Datos</a></li>
+                                <li><a href="/cargar_recsys/">Cargar Sistema de Recomendación</a></li>
+                                <li><a href="/">Inicio</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="#">Consultas</a>
+                        <div class="uk-navbar-dropdown">
+                            <ul class="uk-nav uk-navbar-dropdown-nav">
+                                <li><a href="/peliculas_por_actor/">Películas por Actor</a></li>
+                                <li><a href="/usuarios_mas_activos/">Usuarios Más Activos</a></li>
+                                <li><a href="/recomendar_peliculas/">Recomendar Películas</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        
+        <hr class="uk-divider-icon">
+        
+        <div class="uk-section uk-section-muted uk-padding-small">
+            <h2 class="uk-heading-line"><span>{% block titulo %}{% endblock %}</span></h2>
+            
+            <div class="uk-container uk-container-small">
+                {% block contenido %}{% endblock %}
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
