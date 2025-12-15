@@ -39,7 +39,7 @@ def populateMovies():
             lista_peliculas.append(pelicula)
             dict_peliculas[int(rip[0])] = pelicula
         except:
-            # Si hay error en alguna línea, simplemente la saltamos
+            # Si hay error en alguna línea, la saltamos
             continue
     
     fileobj.close()
