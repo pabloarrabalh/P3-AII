@@ -5,7 +5,7 @@ from datetime import datetime
 import os
 from django.conf import settings
 
-# Ruta absoluta al directorio de datos
+
 path = os.path.join(settings.BASE_DIR, "data")
 
 def populate():
@@ -23,7 +23,7 @@ def populateMovies():
     Pelicula.objects.all().delete()
     
     lista_peliculas = []
-    dict_peliculas = {}  # diccionario {idPelicula: objeto_pelicula}
+    dict_peliculas = {} 
     
     fileobj = open(os.path.join(path, "movies1.txt"), "r", encoding='utf-8')
     for line in fileobj.readlines():
@@ -31,7 +31,6 @@ def populateMovies():
         if len(rip) != 5:
             continue
         
-        # Parsear la fecha (formato YYYY-MM-DD)
         try:
             fecha = datetime.strptime(rip[2], '%Y-%m-%d').date()
         except:
@@ -68,7 +67,7 @@ def populateRatings(m):
             continue
         
         id_pelicula = int(rip[1])
-        if id_pelicula in m:  # Verificar que la película existe
+        if id_pelicula in m:  
             lista.append(Puntuacion(
                 idUsuario=int(rip[0]),
                 pelicula=m[id_pelicula],

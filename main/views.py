@@ -25,9 +25,7 @@ def cargar_bd(request):
         formulario = FormularioConfirmacion(request.POST)
         
         if formulario.is_valid():
-            # Cargar la base de datos
             populateDB.populate()
-            # Obtener estadísticas
             stats = populateDB.get_database_stats()
     
     return render(request, 'cargar_bd.html', {
@@ -43,7 +41,6 @@ def cargar_recsys(request):
     mensaje = None
     
     if request.method == 'POST':
-        # Cargar las preferencias
         recommendations.loadPrefs()
         mensaje = "Sistema de recomendación cargado correctamente"
     
@@ -82,10 +79,8 @@ def usuarios_mas_activos(request):
     Vista para mostrar los 5 usuarios más activos
     y los 3 usuarios más similares a cada uno
     """
-    # Obtener los 5 usuarios más activos
     usuarios_activos = recommendations.getUsuariosMasActivos(n=5)
     
-    # Para cada usuario, obtener los 3 más similares
     usuarios_con_similares = []
     for (id_usuario, num_peliculas) in usuarios_activos:
         similares = recommendations.getUsuariosSimilares(id_usuario, n=3)
@@ -117,10 +112,8 @@ def recomendar_peliculas(request):
             usuario = formulario.cleaned_data['idUsuario']
             fecha = formulario.cleaned_data['fecha']
             
-            # Obtener recomendaciones
             recs = recommendations.recomendar_peliculas_usuario(usuario, fecha, n=2)
             
-            # Obtener detalles de las películas recomendadas
             recomendaciones = []
             for (rec, id_pelicula) in recs:
                 try:
