@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block titulo %}Películas por Actor{% endblock %}
+
+{% block contenido %}
+    <form method="post">
+        {% csrf_token %}
+        {{ formulario.actor }}
+        <button type="submit">Buscar</button>
+    </form>
+    
+    {% if peliculas %}
+        <br>
+        <p>Actor: {{ actor }}</p>
+        <p>Total de películas: {{ num_peliculas }}</p>
+        <br>
+        
+        <table border="1">
+            <tr>
+                <th>ID</th>
+                <th>Título</th>
+                <th>Fecha</th>
+                <th>Director</th>
+                <th>Actores Principales</th>
+            </tr>
+            {% for pelicula in peliculas %}
+            <tr>
+                <td>{{ pelicula.idPelicula }}</td>
+                <td>{{ pelicula.titulo }}</td>
+                <td>{{ pelicula.fecha|date:"d/m/Y" }}</td>
+                <td>{{ pelicula.director }}</td>
+                <td>{{ pelicula.actoresPrincipales }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+{% endblock %}
